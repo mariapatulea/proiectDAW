@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using proiectDAW.Models;
+using proiectDAW.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +37,13 @@ namespace proiectDAW
             });
             services.AddDbContext<AppDbContext>(options =>
             {
+                // options.UseSqlServer("Data Source=DESKTOP-ROBBR9H;Initial Catalog=Lab2DAW;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
                 options.UseSqlServer("Data Source=DESKTOP-ROBBR9H;Initial Catalog=proiectDAW;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             });
+            services.AddTransient<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
