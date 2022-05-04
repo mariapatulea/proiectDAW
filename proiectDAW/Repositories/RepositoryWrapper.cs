@@ -8,6 +8,7 @@ namespace proiectDAW.Repositories
     {
         private readonly AppDbContext _context;
         private IAuthorRepository _author;
+        private IEditorRepository _editor;
 
         public RepositoryWrapper(AppDbContext context)
         {
@@ -23,6 +24,18 @@ namespace proiectDAW.Repositories
                     _author = new AuthorRepository(_context);
                 }
                 return _author;
+            }
+        }
+
+        public IEditorRepository Editor
+        {
+            get
+            {
+                if (_editor == null)
+                {
+                    _editor = new EditorRepository(_context);
+                }
+                return _editor;
             }
         }
 
