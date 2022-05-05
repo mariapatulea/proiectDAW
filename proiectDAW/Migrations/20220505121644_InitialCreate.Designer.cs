@@ -10,8 +10,8 @@ using proiectDAW.Models;
 namespace proiectDAW.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220503132207_Update")]
-    partial class Update
+    [Migration("20220505121644_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,17 +62,12 @@ namespace proiectDAW.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Book");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("proiectDAW.Models.Entities.Editor", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
@@ -86,10 +81,7 @@ namespace proiectDAW.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId")
-                        .IsUnique();
-
-                    b.ToTable("Editor");
+                    b.ToTable("Editors");
                 });
 
             modelBuilder.Entity("proiectDAW.Models.Entities.Reader", b =>
@@ -138,7 +130,7 @@ namespace proiectDAW.Migrations
                 {
                     b.HasOne("proiectDAW.Models.Entities.Author", "Author")
                         .WithOne("Editor")
-                        .HasForeignKey("proiectDAW.Models.Entities.Editor", "AuthorId")
+                        .HasForeignKey("proiectDAW.Models.Entities.Editor", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

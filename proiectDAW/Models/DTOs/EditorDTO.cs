@@ -1,4 +1,5 @@
 ﻿using proiectDAW.Models.Entities;
+using System.Collections.Generic;
 
 namespace proiectDAW.Models.DTOs
 {
@@ -8,8 +9,7 @@ namespace proiectDAW.Models.DTOs
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string PublishingHouse { get; set; }
-        public int AuthorId { get; set; }
-        public Author Author { get; set; }
+        // public Author Author { get; set; }
 
         public EditorDTO(Editor editor)
         {
@@ -17,8 +17,6 @@ namespace proiectDAW.Models.DTOs
             this.LastName = editor.LastName;
             this.FirstName = editor.FirstName;
             this.PublishingHouse = editor.PublishingHouse;
-            this.AuthorId = editor.AuthorId;
-            this.Author = editor.Author;
         }
     }
 }

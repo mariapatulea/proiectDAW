@@ -7,5 +7,6 @@ namespace proiectDAW.Models.DTOs
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string PublishingHouse { get; set; }
+        // public Author Author { get; set; }
     }
 }

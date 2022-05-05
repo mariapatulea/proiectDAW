@@ -9,6 +9,7 @@ namespace proiectDAW.Repositories
         private readonly AppDbContext _context;
         private IAuthorRepository _author;
         private IEditorRepository _editor;
+        private IBookRepository _book;
 
         public RepositoryWrapper(AppDbContext context)
         {
@@ -36,6 +37,18 @@ namespace proiectDAW.Repositories
                     _editor = new EditorRepository(_context);
                 }
                 return _editor;
+            }
+        }
+
+        public IBookRepository Book
+        {
+            get
+            {
+                if (_book == null)
+                {
+                    _book = new BookRepository(_context);
+                }
+                return _book;
             }
         }
 

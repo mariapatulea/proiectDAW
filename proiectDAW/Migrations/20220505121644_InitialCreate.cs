@@ -2,12 +2,12 @@
 
 namespace proiectDAW.Migrations
 {
-    public partial class Added_Author_Book_Editor_Reader_ReaderBook_AndRelationships : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Author",
+                name: "Authors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -17,7 +17,7 @@ namespace proiectDAW.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Author", x => x.Id);
+                    table.PrimaryKey("PK_Authors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -35,7 +35,7 @@ namespace proiectDAW.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Book",
+                name: "Books",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -47,33 +47,31 @@ namespace proiectDAW.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Book", x => x.Id);
+                    table.PrimaryKey("PK_Books", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Book_Author_AuthorId",
+                        name: "FK_Books_Authors_AuthorId",
                         column: x => x.AuthorId,
-                        principalTable: "Author",
+                        principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Editor",
+                name: "Editors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PublishingHouse = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AuthorId = table.Column<int>(type: "int", nullable: false)
+                    PublishingHouse = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Editor", x => x.Id);
+                    table.PrimaryKey("PK_Editors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Editor_Author_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "Author",
+                        name: "FK_Editors_Authors_Id",
+                        column: x => x.Id,
+                        principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -89,9 +87,9 @@ namespace proiectDAW.Migrations
                 {
                     table.PrimaryKey("PK_ReaderBook", x => new { x.ReaderId, x.BookId });
                     table.ForeignKey(
-                        name: "FK_ReaderBook_Book_BookId",
+                        name: "FK_ReaderBook_Books_BookId",
                         column: x => x.BookId,
-                        principalTable: "Book",
+                        principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -103,15 +101,9 @@ namespace proiectDAW.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Book_AuthorId",
-                table: "Book",
+                name: "IX_Books_AuthorId",
+                table: "Books",
                 column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Editor_AuthorId",
-                table: "Editor",
-                column: "AuthorId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReaderBook_BookId",
@@ -122,19 +114,19 @@ namespace proiectDAW.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Editor");
+                name: "Editors");
 
             migrationBuilder.DropTable(
                 name: "ReaderBook");
 
             migrationBuilder.DropTable(
-                name: "Book");
+                name: "Books");
 
             migrationBuilder.DropTable(
                 name: "Reader");
 
             migrationBuilder.DropTable(
-                name: "Author");
+                name: "Authors");
         }
     }
 }

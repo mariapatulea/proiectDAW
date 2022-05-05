@@ -60,17 +60,12 @@ namespace proiectDAW.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Book");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("proiectDAW.Models.Entities.Editor", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
@@ -83,9 +78,6 @@ namespace proiectDAW.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId")
-                        .IsUnique();
 
                     b.ToTable("Editors");
                 });
@@ -136,7 +128,7 @@ namespace proiectDAW.Migrations
                 {
                     b.HasOne("proiectDAW.Models.Entities.Author", "Author")
                         .WithOne("Editor")
-                        .HasForeignKey("proiectDAW.Models.Entities.Editor", "AuthorId")
+                        .HasForeignKey("proiectDAW.Models.Entities.Editor", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

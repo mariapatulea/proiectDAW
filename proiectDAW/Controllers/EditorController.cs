@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using proiectDAW.Models.DTOs;
 using proiectDAW.Models.Entities;
 using proiectDAW.Repositories;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace proiectDAW.Controllers
@@ -20,7 +21,7 @@ namespace proiectDAW.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEditorById(int id)
         {
-            var editor = await _repository.Editor.GetEditorByIdWithAuthor(id);
+            var editor = await _repository.Editor.GetEditorByIdWithAuthor(id);  // nu imi ia si autorul
             if (editor == null)
             {
                 return NotFound("Editor with this Id doesn't exist!");
@@ -29,30 +30,31 @@ namespace proiectDAW.Controllers
             return Ok(editorToReturn);
         }
 
-        //[HttpPost]  // nu merge
-        //public async Task<IActionResult> AddEditor(AddEditorDTO editor)
-        //{
-        //    Editor newEditor = new Editor();
-        //    newEditor.PublishingHouse = editor.PublishingHouse;
-        //    newEditor.FirstName = editor.FirstName;
-        //    newEditor.LastName = editor.LastName;
-        //    Author newAuthor = new Author();
-        //    newAuthor.FirstName = "Colleen";
-        //    newAuthor.LastName = "Hoover";
-        //    newAuthor.Editor = newEditor;
-        //    newEditor.Author = newAuthor;
-        //    newEditor.AuthorId = newAuthor.Id;
+        [HttpPost]
+        public async Task<IActionResult> AddEditor(AddEditorDTO editor)
+        {
+            Editor newEditor = new Editor();
+            newEditor.PublishingHouse = editor.PublishingHouse;
+            newEditor.FirstName = editor.FirstName;
+            newEditor.LastName = editor.LastName;
+            newEditor.Author = new Author()
+            {
+                    LastName = "Hazelwood",
+                    FirstName = "Ali",
+                    Id = newEditor.Id,
+                    Editor = newEditor,
+                    PublishedBooks = new List<Book>()
+            };
 
-        //    _repository.Editor.Create(newEditor);
+            _repository.Editor.Create(newEditor);
 
-        //    await _repository.Editor.SaveAsync();
+            await _repository.Editor.SaveAsync();
 
-        //    _repository.Author.Create(newAuthor);
+            _repository.Author.Create(newEditor.Author);
+            await _repository.Author.SaveAsync();
 
-        //    await _repository.Author.SaveAsync();
-
-        //    return Ok(( new EditorDTO(newEditor), new AuthorDTO(newAuthor)));
-        //}
+            return Ok(new EditorDTO(newEditor));
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEditorById(int id)
