@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using proiectDAW.Models.Entities;
 
 namespace proiectDAW.Models
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Editor> Editors { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<SessionToken> SessionTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -36,6 +38,14 @@ namespace proiectDAW.Models
                 .HasOne(readerBook => readerBook.Book)
                 .WithMany(book => book.ReaderBooks)
                 .HasForeignKey(readerBook => readerBook.BookId);
+
+            // relatia de many to many dintre role si user
+            builder.Entity<UserRole>(userRole =>
+            {
+                userRole.HasKey(userRole => new { userRole.UserId, userRole.RoleId });
+                userRole.HasOne(userRole => userRole.Role).WithMany(role => role.UserRoles).HasForeignKey(userRole => userRole.RoleId);
+                userRole.HasOne(userRole => userRole.User).WithMany(user => user.UserRoles).HasForeignKey(userRole => userRole.UserId);
+            });
         }
     }
 }

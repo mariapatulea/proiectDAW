@@ -7,6 +7,8 @@ namespace proiectDAW.Repositories
         IAuthorRepository Author { get; }
         IEditorRepository Editor { get; }
         IBookRepository Book { get; }
+        IUserRepository User { get; }
+        ISessionTokenRepository SessionToken { get; }
         Task SaveAsync();
     }
 }
